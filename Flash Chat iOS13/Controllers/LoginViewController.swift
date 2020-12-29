@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController {
 
@@ -15,6 +16,19 @@ class LoginViewController: UIViewController {
     
 
     @IBAction func loginPressed(_ sender: UIButton) {
+        if let email = emailTextfield.text, let password = passwordTextfield.text {
+            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+                if let e = error {
+                    let alert = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+
+                    self.present(alert, animated: true)
+                } else {
+                    // Navigate to ChatViewController
+                    self.performSegue(withIdentifier: K.loginSegue, sender: self)
+                }
+            }
+        }
     }
     
 }
